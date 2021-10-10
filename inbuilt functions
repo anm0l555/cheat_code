@@ -1,0 +1,94 @@
+########################################
+####    Generation of random nos    ####
+########################################
+library(moments)
+
+sub = 6
+n = 750
+
+data <- list()
+
+####      using rnorm     ####
+data[[1]] <- rnorm(n, mean = 65, sd = 10)
+
+####      using runif     ####
+data[[2]] <- runif(n, min = 0, max = 100)
+
+####      using sample     ####
+data[[3]]<-sample(1:100, n,replace=T)
+
+####      using randu     ####
+temp <- vector("numeric", n)
+m <- 101
+a <- 50
+c <- 10
+
+x0 <- 20
+for (j in 1:n) {
+  x0 <- ((a * x0 + c) * (sample(1:10000, 1,replace=T))) %% m
+  temp[j] <- x0
+}
+data[[4]] <- temp;
+
+####      using rexp     ####
+temp2 <- rexp(n, 1/10)
+for(j in 1:n){
+  temp2[j] <- temp2[j] %% 101;
+}
+
+data[[5]] <- temp2;
+
+####using rnorm####
+data[[6]] <- rnorm(n, mean = 40, sd = 13)
+
+
+for(i in 1:sub){
+  cat("Mean of Subject", i, "is ", mean(data[[i]]), "\n")
+}
+cat("\n")
+
+for(i in 1:sub){
+  cat("Median of Subject", i, "is ", median(data[[i]]), "\n")
+}
+cat("\n")
+
+for(i in 1:sub){
+  cat("Range of Subject", i, "is ", range(data[[i]]), "\n")
+}
+cat("\n")
+
+for(i in 1:sub){
+  cat("Mean deviation of Subject", i, "is ", mad(data[[i]]), "\n")
+}
+cat("\n")
+
+for(i in 1:sub){
+  cat("Standard deviation of Subject", i, "is ", sd(data[[i]]), "\n")
+}
+cat("\n")
+
+for(i in 1:sub){
+  cat("Variance of Subject", i, "is ", var(data[[i]]), "\n")
+}
+cat("\n")
+
+#for(i in 1:sub){
+#  cat("Root mean square deviation of Subject", i, "is ", rmse(data[[i]]), "\n")
+#}
+#cat("\n")
+
+for (i in 1:sub) {
+  x <- data[[i]]
+  h<-hist(x, breaks=25, col="grey", xlab="Marks",
+          main=i)
+  xfit<-seq(min(x),max(x),length=40)
+  yfit<-dnorm(xfit,mean=mean(x),sd=sd(x))
+  yfit <- yfit*diff(h$mids[1:2])*length(x)
+  #yfit <- yfit*2000
+  lines(xfit, yfit, col="blue", lwd=2)
+}
+
+for(i in 1:sub){
+  cat("Skewness of Subject", i, "is ", skewness(data[[i]]), " and Kurtosis is ", kurtosis(data[[i]]), "\n")
+}
+cat("\n")
