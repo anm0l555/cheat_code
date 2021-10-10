@@ -1,0 +1,61 @@
+%%R
+# Lab1
+x=4
+
+m=101
+
+a=3
+
+c=3
+
+sub_scores=list()
+
+sum=c(0)
+for(j in 1:6)
+
+{
+
+  s=x
+
+  sub_scores [[j]]=c(0)
+
+  sub_scores[[j]][1]=s
+  for (i in 2:750)
+  {
+  sub_scores [[j]][i]=(a*sub_scores [[j]][i-1]+c) %% m
+  s=s+sub_scores [[j]] [i]
+  }
+x=1+x
+
+c=1+c
+
+sum[j]=s
+
+md=sort (sub_scores [[j]])
+print(md)
+
+med=md[750/2]
+print(paste("Median of subject",j))
+print(med)
+print (paste("Mean of subject",j))
+mn=sum[j]/750
+print(mn)
+std=((sum((sub_scores [[j]]-mn)**2))/750)**(1/2)
+print (paste ("Standard Deviation",j))
+print(std)
+hist(md,main=paste('Subject',j),xlab='Marks',ylim=c(0,100))
+outliers=c()
+Q1=(md[187]+md[188])/2
+Q3=(md[562]+md[563])/2
+iqr=Q3-Q1
+for (i in md)
+  {
+   if (i<Q1-1.5*iqr || i>Q3+1.5*iqr){
+       append(outliers,i)
+   }
+
+  }
+print(paste("Outliers of subject",j))
+print(outliers)
+boxplot(md,main=paste('Subject',j))
+}
