@@ -1,0 +1,13 @@
+# lab2
+# print(getwd())# get the working directory
+setwd('/content/drive/MyDrive/THAPAR NOTES/SEM 5/Prob')# set the working directory
+# print(getwd())
+my_data=read.csv(file='Iris.csv')# read csv file and creaete dataframe
+# my_data$(col name) # access a col data
+print(head(my_data))
+summary(my_data)
+for (i in 2:ncol(my_data)){
+  hist(my_data[,c(i)],main=paste(colnames(my_data)[i]),xlab=paste(colnames(my_data)[i]))  
+  print(colnames(my_data)[i])  
+  print(boxplot(my_data[,c(i)])$out)
+}
