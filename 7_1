@@ -1,0 +1,14 @@
+# Z=(X-mean)/std
+# z is shifted point that is points of our data set
+# X is points of standard data which is already calculated
+heights=rnorm(1000,1.7,0.1)
+plot(density(heights))
+h2=rnorm(10000,1.7,0.1)
+lines(density(h2),col="red")
+print(qnorm(0.05,1.7,0.1)) # Qnorm gives the point(qvalue)(Z) where cummulative probability(area) is 0.05
+print(qnorm(0.95,1.7,0.1)) # Qnorm gives the point(qvalue)(Z) where cummulative probability(area) is 0.95
+# interval will be btw 0.05 to 0.95 i.e 
+# 1.53<height<1.86
+
+print(qnorm(seq(0, 1, 0.01),1.7,0.1))
+print(pnorm(seq(0,1,0.05),1.7,0.1))# Pnorm gives the cummulative probability(area) given the point(qvalue)(Z)
