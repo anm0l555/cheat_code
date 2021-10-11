@@ -1,0 +1,146 @@
+# Step 0: Start; Getting the starting time
+cat("\nSTART\n")
+startTime = proc.time()[3]
+startTime
+
+
+
+# Step 1: Include Library
+cat("\nStep 1: Library Inclusion")
+
+
+
+# Step 2: Variable Declaration and Seed Setting
+cat("\nStep 2: Variable Declaration and Seed Setting")
+modelName <- "linear"
+modelName
+InputDataFileName="regressionDataSet.csv"
+InputDataFileName
+
+seed=sample(99999:999999, 1)
+seed
+set.seed(seed)
+
+
+
+# Step 3: Data Division for train/test
+cat("\nStep 3: Data Division")
+training=50      # define percentage
+
+
+
+# Step 4: Load the data from file
+cat("\nStep 4: Loading the data")
+
+dataset <- read.csv(InputDataFileName)    # Read the datafile
+head(dataset)   # Show Top 6 records
+nrow(dataset)   # Show number of records
+names(dataset)  # Show fields names or columns names
+
+
+# Step 5: Count total number of observations/rows.
+cat("\nStep 5: Counting dataset")
+totalDataset <- nrow(dataset)
+totalDataset
+
+
+
+# Step 6: Choose Target variable
+cat("\nStep 6: Choose Target Variable")
+target  <- names(dataset)[1]   # i.e. RMSD
+target
+
+
+
+# Step 7: Choose inputs Variables
+cat("\nStep 7: Choose Inputs Variable")
+inputs <- setdiff(names(dataset),target)
+inputs
+length(inputs)
+
+
+selectedInputs <- inputs
+
+
+# Step 8: Select Training Data Set ( Select random indices )
+cat("\nStep 8: Select training dataset")
+trainSample <- sample(totalDataset, totalDataset * training/100)
+head(trainSample)     # Show Top 6 indecies
+length(trainSample)   # Show number of indecies
+
+trainDataset <- dataset[trainSample,c(selectedInputs, target)]
+head(trainDataset)    # Show Top 6 records
+nrow(trainDataset)    # Show number of train Dataset
+
+
+
+# Step 9: Select Testing Data Set
+cat("\nStep 9: Select testing dataset")
+testSample <- setdiff(seq_len(nrow(dataset)), trainSample)
+head(testSample)      # Show Top 6 indecies
+length(testSample)    # Show number of indecies
+
+testDataset <- dataset[testSample,c(selectedInputs, target)]
+head(testDataset)
+nrow(testDataset)
+
+
+
+
+# Step 10: Regression Model Building: Training
+cat("\nStep 10: Model Building -> ", modelName)
+formula <- as.formula(paste(target,"~",paste(c(selectedInputs),collapse = "+")))
+formula
+
+model   <- lm(formula, trainDataset)
+model
+summary(model)         
+
+
+# Step 11: Prediction (Testing)
+cat("\nStep 11: Prediction using -> ", modelName)
+Predicted <- predict(model, testDataset)
+head(Predicted)
+
+
+
+# Step 12: Extracting Actual
+cat("\nStep 12: Extracting Actual")
+Actual <- as.double(unlist(testDataset[target]))
+head(Actual)
+
+
+
+
+# Step 13: Model Evaluation
+cat("\nStep 13: Model Evaluation")
+
+# Step 13.1: Correlation
+r <- cor(Actual,Predicted )
+r <- round(r,2)
+r
+
+# Step 13.2: Accuracy
+accuracy <- mean(abs(Actual-Predicted) <=1)
+accuracy <- round(accuracy,4) *100
+accuracy
+
+# Step 13.5: Total Time
+totalTime = proc.time()[3] - startTime
+totalTime
+
+# Step 13.6: Scatter Plot
+png(filename=paste(modelName,"-ScatterPlot.png",sep=''))
+
+plot(Actual,Predicted,main=paste("Actual Vs Predicted\n",modelName),xlab="Predicted", ylab="Actual")#, pch=19)
+
+abline(lm(Actual ~ Predicted,),col="White") 
+
+dev.off()
+
+
+
+
+
+
+
