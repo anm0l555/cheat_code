@@ -1,0 +1,13 @@
+getwd()
+setwd("C:/Users/anmol/Desktop/R")
+getwd()
+auto <- read.csv("auto.csv")
+cor(auto$MPG, auto$Price)
+auto_num <- Filter(is.numeric, auto)
+cor(auto_num)
+
+require(corrgram)
+corrgram(auto)
+
+auto_subset <- auto[, c('Price', 'MPG', 'Rseat', 'Hroom')]
+corrgram(auto_subset, lower.panel = panel.cor, upper.panel = panel.pts)
