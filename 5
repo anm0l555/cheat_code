@@ -1,0 +1,66 @@
+%%R
+# LAB 5 & 6
+# Q1
+p=0
+t=1000
+for (i in 1:t){
+    x=rbinom(250,1,.5)
+    y=rle(x)
+    for (j in y[['lengths']]){
+        if (j>=16){
+            p=p+1
+            break
+        }
+    }
+}
+print(p/t)
+
+# Q2
+p=0
+t=1000
+for (i in 1:t){
+    x=rbinom(8,1,.5)
+    y=rle(x)
+    if (max(y[['lengths']])==1){
+        p=p+1
+    }
+}
+print(p/t)
+
+# Q3
+p=0
+t=100000
+for (j in 1:t)
+{
+  x=sample(1:26,6)
+  flag=1
+  for (i in 1:5){
+      if (x[i]>x[i+1]){
+          flag=0
+          break
+      }
+  }
+  if (flag==1)p=p+1
+}
+print(p/t)
+
+# Q4
+p=0
+t=10000
+for (j in 1:t)
+{
+data=c(0,0,0,1,1,1)
+x=sample(data,size=6)
+# print(x)
+flag=1
+if (x[1]==1){
+ for (i in 1:2){
+    if (x[i]!=x[i+1]){
+        flag=0
+        break
+    }
+  }   
+}else flag=0
+if (flag==1)p=p+1
+}
+print(p/t)
