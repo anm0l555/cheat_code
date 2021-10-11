@@ -1,0 +1,39 @@
+x<-rpois(100, 50)
+y<-rpois(100, 100)
+z<-rpois(100, 150)
+# print(x)
+# print(y)
+# print(z)
+data=data.frame(x,y,z)
+print(head(data))
+factors <- c("x", "y")
+formula<-as.formula(paste("z~", paste(factors, collapse="+")))
+print(formula)
+model1=lm(formula,data=data)
+print(summary(model1)$coefficients)
+coef=summary(model1)$coefficients[,1]
+print(coef)
+print(coef[2]*head(x)+coef[3]*head(y)+coef[1])
+
+data=data.frame(x,x^2,y)
+print(head(data))
+formula<-as.formula("y~x+x**2")
+print(formula)
+model2=lm(formula,data=data)
+print(summary(model2)$coefficients)
+coef=summary(model2)$coefficients[,1]
+print(coef)
+# print(coef[2]*head(x)+coef[3]*head(y)+coef[1])
+
+
+data=data.frame(x,y)
+print(head(data))
+formula<-as.formula("log(y)~x")
+print(formula)
+model3=lm(formula,data=data)
+print(summary(model3)$coefficients)
+coef=summary(model3)$coefficients[,1]
+print(coef)
+print(exp(coef[1]+coef[2]*head(x)))
+print(summary(model3))
+# Multiple R squared is the coefficient of determination
